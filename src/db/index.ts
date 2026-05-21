@@ -38,7 +38,7 @@ export const initDB = async () => {
       )
     `);
 
-    console.log("Database initialized successfully");
+    console.log("L2B7A2 database initialized successfully");
   } catch (error) {
     console.log(error);
   }

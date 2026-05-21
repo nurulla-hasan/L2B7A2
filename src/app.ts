@@ -2,6 +2,7 @@ import express, { type Application } from "express";
 import cors from "cors";
 import logger from "./middleware/logger";
 import cookie from "cookie-parser";
+import globalErrorhandler from "./middleware/globalErrorHandler";
 
 const app: Application = express();
 
@@ -19,8 +20,10 @@ app.use(
 
 app.get("/", (req, res) => {
   res.status(200).json({
-    message: "Hello World",
+    message: "Hello From L2B7A2",
   });
 });
+
+app.use(globalErrorhandler);
 
 export default app;
