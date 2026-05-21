@@ -3,6 +3,7 @@ import cors from "cors";
 import logger from "./middleware/logger";
 import cookie from "cookie-parser";
 import globalErrorhandler from "./middleware/globalErrorHandler";
+import { authRoute } from "./module/auth/auth.route";
 
 const app: Application = express();
 
@@ -23,6 +24,13 @@ app.get("/", (req, res) => {
     message: "Hello From L2B7A2",
   });
 });
+
+
+
+app.use("/api/auth", authRoute)
+
+
+
 
 app.use(globalErrorhandler);
 
