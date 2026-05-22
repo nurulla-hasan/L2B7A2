@@ -1,25 +1,123 @@
 import type { JwtPayload } from "jsonwebtoken";
 import { pool } from "../../db";
-import type { TCreateIssuePayload, TUpdateIssuePayload } from "./issue.type";
+import type {
+  TCreateIssuePayload,
+  TIssueQuery,
+  TUpdateIssuePayload,
+} from "./issue.type";
 
-const getAllIssuesFromDB = async () => {
-  // const { sort, type, status } = req.query;
+const getAllIssuesFromDB = async (query: TIssueQuery) => {
+  const { sort = "newest", type, status } = query;
 
-  const result = await pool.query(`SELECT * FROM issues`);
+  if (sort !== "newest" && sort !== "oldest") {
+    throw new Error("Invalid sort value");
+  }
 
-  return result.rows;
+  if (type && type !== "bug" && type !== "feature_request") {
+    throw new Error("Invalid issue type");
+  }
+
+  if (
+    status &&
+    status !== "open" &&
+    status !== "in_progress" &&
+    status !== "resolved"
+  ) {
+    throw new Error("Invalid issue status");
+  }
+
+  const conditions: string[] = [];
+  const values: string[] = [];
+
+  if (type) {
+    values.push(type);
+    conditions.push(`type = $${values.length}`);
+  }
+
+  if (status) {
+    values.push(status);
+    conditions.push(`status = $${values.length}`);
+  }
+
+  const whereClause =
+    conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+
+  const orderBy = sort === "oldest" ? "ASC" : "DESC";
+
+  const issueResult = await pool.query(
+    `
+      SELECT *
+      FROM issues
+      ${whereClause}
+      ORDER BY created_at ${orderBy}
+    `,
+    values,
+  );
+
+  const issues = issueResult.rows;
+
+  if (issues.length === 0) {
+    return [];
+  }
+
+  const reporterIds = [...new Set(issues.map((issue) => issue.reporter_id))];
+
+  const reporterResult = await pool.query(
+    `
+      SELECT id, name, role
+      FROM users
+      WHERE id = ANY($1::int[])
+    `,
+    [reporterIds],
+  );
+
+  const reporterMap = new Map(
+    reporterResult.rows.map((reporter) => [reporter.id, reporter]),
+  );
+
+  const issuesWithReporter = issues.map((issue) => {
+    const { reporter_id, ...issueData } = issue;
+
+    return {
+      ...issueData,
+      reporter: reporterMap.get(reporter_id),
+    };
+  });
+
+  return issuesWithReporter;
 };
 
 const getSingleIssueFromDB = async (id: string) => {
-  const result = await pool.query(
+  const issueResult = await pool.query(
     `
-    SELECT * FROM issues
-    WHERE id = $1
+      SELECT *
+      FROM issues
+      WHERE id = $1
     `,
     [id],
   );
 
-  return result.rows[0];
+  const issue = issueResult.rows[0];
+
+  if (!issue) {
+    return null;
+  }
+
+  const reporterResult = await pool.query(
+    `
+      SELECT id, name, role
+      FROM users
+      WHERE id = $1
+    `,
+    [issue.reporter_id],
+  );
+
+  const { reporter_id, ...issueData } = issue;
+
+  return {
+    ...issueData,
+    reporter: reporterResult.rows[0],
+  };
 };
 
 const createIssueIntoDB = async (
@@ -95,7 +193,7 @@ const updateIssueIntoDB = async (
       throw new Error("Contributor cannot update issue status");
     }
   }
-  
+
   if (title && title.length > 150) {
     throw new Error("Title must be less than or equal to 150 characters");
   }

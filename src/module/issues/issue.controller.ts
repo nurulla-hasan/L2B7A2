@@ -5,7 +5,7 @@ import type { JwtPayload } from "jsonwebtoken";
 
 const getAllIssues = async (req: Request, res: Response) => {
   try {
-    const result = await issueService.getAllIssuesFromDB();
+    const result = await issueService.getAllIssuesFromDB(req.query);
 
     sendResponse(res, {
       statusCode: 200,
@@ -14,8 +14,15 @@ const getAllIssues = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
+    const statusCode =
+      error instanceof Error &&
+      (error.message === "Invalid sort value" ||
+        error.message === "Invalid issue type" ||
+        error.message === "Invalid issue status")
+        ? 400
+        : 500;
     sendResponse(res, {
-      statusCode: 500,
+      statusCode: statusCode,
       success: false,
       message: error instanceof Error ? error.message : "Internal Server Error",
       errors: error,

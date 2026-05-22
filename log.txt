@@ -102,3 +102,12 @@ Method=> PATCH || Time => 1779442409313 ||  Url => /api/issues/1
 Method=> POST || Time => 1779442420716 ||  Url => /api/auth/login
 Method=> PATCH || Time => 1779442444295 ||  Url => /api/issues/1
 Method=> PATCH || Time => 1779442472654 ||  Url => /api/issues/1
+Method=> GET || Time => 1779443399486 ||  Url => /api/issues
+Method=> GET || Time => 1779443408131 ||  Url => /api/issues?sort=oldest
+Method=> GET || Time => 1779443451032 ||  Url => /api/issues
+Method=> GET || Time => 1779443474210 ||  Url => /api/issues?type=bug
+Method=> GET || Time => 1779443489426 ||  Url => /api/issuesstatus=open
+Method=> GET || Time => 1779443500467 ||  Url => /api/issues?status=open
+Method=> GET || Time => 1779443524066 ||  Url => /api/issues?sort=oldest&type=bug&status=open
+Method=> GET || Time => 1779443558886 ||  Url => /api/issues
+Method=> GET || Time => 1779443593561 ||  Url => /api/issues/1
