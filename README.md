@@ -4,9 +4,9 @@ DevPulse is a backend project for tracking bugs and feature requests inside a so
 
 ## Live Link
 
-Live API: `your live link here`
+Live API: `https://l2-b7-a2.vercel.app`
 
-GitHub Repo: `your github repo link here`
+GitHub Repo: `https://github.com/nurulla-hasan/L2B7A2`
 
 ## Technology
 

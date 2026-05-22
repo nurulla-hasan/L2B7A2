@@ -1,6 +1,6 @@
 import express, { type Application } from "express";
 import cors from "cors";
-import logger from "./middleware/logger";
+// import logger from "./middleware/logger";
 import cookie from "cookie-parser";
 import globalErrorhandler from "./middleware/globalErrorHandler";
 import { authRoute } from "./module/auth/auth.route";
@@ -12,7 +12,7 @@ app.use(cookie());
 app.use(express.json());
 app.use(express.text());
 app.use(express.urlencoded({ extended: true }));
-app.use(logger);
+// app.use(logger);
 
 app.use(
   cors({
