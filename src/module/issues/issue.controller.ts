@@ -107,8 +107,33 @@ const updateIssue = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
+    let statusCode = 500;
+
+    if (error instanceof Error) {
+      if (error.message === "Issue not found") {
+        statusCode = 404;
+      } else if (
+        error.message === "Forbidden access" ||
+        error.message === "Contributor cannot update issue status"
+      ) {
+        statusCode = 403;
+      } else if (
+        error.message === "Only open issues can be updated by contributor"
+      ) {
+        statusCode = 409;
+      } else if (
+        error.message === "Invalid issue type" ||
+        error.message === "Invalid issue status" ||
+        error.message ===
+          "Title must be less than or equal to 150 characters" ||
+        error.message === "Description must be at least 20 characters"
+      ) {
+        statusCode = 400;
+      }
+    }
+
     sendResponse(res, {
-      statusCode: 500,
+      statusCode,
       success: false,
       message: error instanceof Error ? error.message : "Internal Server Error",
       errors: error,

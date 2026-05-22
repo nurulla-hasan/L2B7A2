@@ -95,6 +95,27 @@ const updateIssueIntoDB = async (
       throw new Error("Contributor cannot update issue status");
     }
   }
+  
+  if (title && title.length > 150) {
+    throw new Error("Title must be less than or equal to 150 characters");
+  }
+
+  if (description && description.length < 20) {
+    throw new Error("Description must be at least 20 characters");
+  }
+
+  if (type && type !== "bug" && type !== "feature_request") {
+    throw new Error("Invalid issue type");
+  }
+
+  if (
+    status &&
+    status !== "open" &&
+    status !== "in_progress" &&
+    status !== "resolved"
+  ) {
+    throw new Error("Invalid issue status");
+  }
 
   const result = await pool.query(
     `
