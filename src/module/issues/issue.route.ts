@@ -1,5 +1,5 @@
 import { Router } from "express";
-// import auth from "../../middleware/auth";
+import auth from "../../middleware/auth";
 // import role from "../../middleware/role";
 import { issueController } from "./issue.controller";
 
@@ -15,9 +15,9 @@ router.get("/", issueController.getAllIssues);
 
 router.get("/:id", issueController.getSingleIssue);
 
-// router.post("/", auth, issueController.createIssue);
+router.post("/", auth, issueController.createIssue);
 
-// router.patch("/:id", auth, issueController.updateIssue);
+router.patch("/:id", auth, issueController.updateIssue);
 
 // router.delete("/:id", auth, role("maintainer"), issueController.deleteIssue);
 

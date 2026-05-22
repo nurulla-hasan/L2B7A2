@@ -26,3 +26,14 @@ Method=> GET || Time => 1779430248596 ||  Url => /api/issues
 Method=> GET || Time => 1779430349190 ||  Url => /api/issues
 Method=> POST || Time => 1779430388756 ||  Url => /api/auth/login
 Method=> GET || Time => 1779430405525 ||  Url => /api/issues
+Method=> GET || Time => 1779430483277 ||  Url => /api/issues/1
+Method=> GET || Time => 1779430498507 ||  Url => /api/issues
+Method=> POST || Time => 1779431263228 ||  Url => /api/issues
+Method=> POST || Time => 1779431271733 ||  Url => /api/issues
+Method=> POST || Time => 1779431283715 ||  Url => /api/issues
+Method=> POST || Time => 1779431291035 ||  Url => /api/issues
+Method=> GET || Time => 1779431336707 ||  Url => /api/issues
+Method=> GET || Time => 1779431372634 ||  Url => /api/issues/1
+Method=> GET || Time => 1779431384107 ||  Url => /api/issues
+Method=> GET || Time => 1779431542366 ||  Url => /api/issues/1
+Method=> GET || Time => 1779433168913 ||  Url => /api/issues
