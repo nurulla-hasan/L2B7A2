@@ -21,3 +21,8 @@ Method=> POST || Time => 1779380505833 ||  Url => /api/auth/login
 Method=> POST || Time => 1779380598620 ||  Url => /api/auth/login
 Method=> POST || Time => 1779380615939 ||  Url => /api/auth/login
 Method=> POST || Time => 1779380735517 ||  Url => /api/auth/login
+Method=> GET || Time => 1779430206140 ||  Url => /api/issues
+Method=> GET || Time => 1779430248596 ||  Url => /api/issues
+Method=> GET || Time => 1779430349190 ||  Url => /api/issues
+Method=> POST || Time => 1779430388756 ||  Url => /api/auth/login
+Method=> GET || Time => 1779430405525 ||  Url => /api/issues
