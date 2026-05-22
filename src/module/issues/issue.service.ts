@@ -88,6 +88,10 @@ const getAllIssuesFromDB = async (query: TIssueQuery) => {
 };
 
 const getSingleIssueFromDB = async (id: string) => {
+  if (!Number.isInteger(Number(id))) {
+    throw new Error("Invalid issue id");
+  }
+
   const issueResult = await pool.query(
     `
       SELECT *
@@ -161,6 +165,10 @@ const updateIssueIntoDB = async (
   payload: TUpdateIssuePayload,
   user: JwtPayload,
 ) => {
+  if (!Number.isInteger(Number(id))) {
+    throw new Error("Invalid issue id");
+  }
+
   const { title, description, type, status } = payload;
 
   const issueResult = await pool.query(
@@ -234,6 +242,10 @@ const updateIssueIntoDB = async (
 };
 
 const deleteIssueFromDB = async (id: string) => {
+  if (!Number.isInteger(Number(id))) {
+    throw new Error("Invalid issue id");
+  }
+
   const result = await pool.query(
     `
     DELETE FROM issues

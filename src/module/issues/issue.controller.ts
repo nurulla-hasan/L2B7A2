@@ -51,8 +51,11 @@ const getSingleIssue = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
+    const statusCode =
+      error instanceof Error && error.message === "Invalid issue id" ? 400 : 500;
+
     sendResponse(res, {
-      statusCode: 500,
+      statusCode,
       success: false,
       message: error instanceof Error ? error.message : "Internal Server Error",
       errors: error,
@@ -81,8 +84,17 @@ const createIssue = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
+    const statusCode =
+      error instanceof Error &&
+      (error.message === "Title, description and type are required" ||
+        error.message === "Title must be less than or equal to 150 characters" ||
+        error.message === "Description must be at least 20 characters" ||
+        error.message === "Invalid issue type")
+        ? 400
+        : 500;
+
     sendResponse(res, {
-      statusCode: 500,
+      statusCode,
       success: false,
       message: error instanceof Error ? error.message : "Internal Server Error",
       errors: error,
@@ -119,6 +131,8 @@ const updateIssue = async (req: Request, res: Response) => {
     if (error instanceof Error) {
       if (error.message === "Issue not found") {
         statusCode = 404;
+      } else if (error.message === "Invalid issue id") {
+        statusCode = 400;
       } else if (
         error.message === "Forbidden access" ||
         error.message === "Contributor cannot update issue status"
@@ -167,8 +181,11 @@ const deleteIssue = async (req: Request, res: Response) => {
       message: "Issue deleted successfully",
     });
   } catch (error) {
+    const statusCode =
+      error instanceof Error && error.message === "Invalid issue id" ? 400 : 500;
+
     sendResponse(res, {
-      statusCode: 500,
+      statusCode,
       success: false,
       message: error instanceof Error ? error.message : "Internal Server Error",
       errors: error,

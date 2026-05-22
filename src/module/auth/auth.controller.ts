@@ -13,8 +13,13 @@ const loginUser = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
+    const statusCode =
+      error instanceof Error && error.message.startsWith("Invalid credentials")
+        ? 401
+        : 500;
+
     sendResponse(res, {
-      statusCode: 500,
+      statusCode,
       success: false,
       message: error instanceof Error ? error.message : "Internal Server Error",
       errors: error,
@@ -34,7 +39,13 @@ const signUpUser = async (req: Request, res: Response) => {
     });
   } catch (error) {
     sendResponse(res, {
-      statusCode: error instanceof Error && error.message === "User already exists" ? 409 : 500,
+      statusCode:
+        error instanceof Error && error.message === "User already exists"
+          ? 409
+          : error instanceof Error &&
+              error.message === "Name, email and password are required!"
+            ? 400
+            : 500,
       success: false,
       message: error instanceof Error ? error.message : "Internal Server Error",
       errors: error,

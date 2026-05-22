@@ -1,5 +1,5 @@
 import { pool } from "../../db";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import generateToken from "../../utility/generateToken";
 import type { TLoginUser, TSignUpUser } from "./auth.type";
 
